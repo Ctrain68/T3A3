@@ -1,0 +1,10 @@
+CREATE TABLE users
+(UserID SERIAL PRIMARY KEY,
+Fname VARCHAR NOT NULL,
+Lname VARCHAR NOT NULL,
+UserPass VARCHAR NOT NULL,
+Profile_Pic TEXT,
+Account_active BOOLEAN,
+Email TEXT NOT NULL);
+
+
