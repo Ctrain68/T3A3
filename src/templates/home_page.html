@@ -1,15 +1,9 @@
-{% extends "layout.html" %}
 {% block content %}
-    {% for post in posts %}
-        <article class="media content-section">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.category }}</a>
-              <small class="text-muted">{{ post.rentpw }}</small>
-            </div>
-            <h2><a class="article-title" href="#">{{ post.equipment_name }}</a></h2>
-            <p class="article-content">{{ post.equipment_description }}</p>
-          </div>
-        </article>
-    {% endfor %}
+  {% for post in posts %}
+      <h2>"Equipment Name"{{ post.equipment_name }}</h2>
+      <h3>{{ post.equipment_description }}</h3>
+      <a>{{ post.category }}</a>
+      <p>{{ post.rentpw }}</p>
+
+  {% endfor %}
 {% endblock %}

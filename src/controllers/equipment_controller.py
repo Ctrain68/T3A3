@@ -6,28 +6,41 @@ from models.User import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth_services import verify_user
 from main import db
+from sqlalchemy.sql import func, label
 import json
 
 equipment = Blueprint("equipment", __name__, url_prefix="/")
 
 
-@equipment.route("/<string:available>", methods=["GET"])
+@equipment.route("/available/<string:available>", methods=["GET"])
 def equipment_get_available(available):
     query = db.session.query(Equipment)
     query = query.filter(Equipment.rented == False)
     posts = query.all()
-    # display = jsonify(equipments_schema.dump(equipment))
+    return jsonify(equipments_schema.dump(posts))
     # posts = display.json()
-    return render_template("home_page.html", posts = posts)   
+    # return render_template("home_page.html", posts = posts)   
 
-@equipment.route("/<string:average>", methods=["GET"])
-def equipment_get_available(average):
+@equipment.route("/count/<string:count>", methods=["GET"])
+def equipment_get_count_available(count):
     query = db.session.query(Equipment)
-    query = query.filter(Equipment.rented == False)
-    posts = query.all()
-    # display = jsonify(equipments_schema.dump(equipment))
+    equipment = query.filter(Equipment.rented == False).count()
+    # equipment = query.all()
+    return jsonify(equipment)
     # posts = display.json()
-    return render_template("home_page.html", posts = posts)  
+    # return render_template("home_page.html", posts = posts)  
+
+@equipment.route("/average/<string:average>", methods=["GET"])
+def equipment_get_average_price(average):
+    # query = Equipment.query(func.sum(Equipment.rentpw.all()))
+    query = db.session.query(Equipment.category, label('average_rent', func.avg(Equipment.rentpw))).group_by(Equipment.category).all()
+    
+    # query = db.session.query(func.avg(Equipment.rentpw).label("average_rent")).group_by(Equipment.rented).all()
+    # equipment = query.filter(Equipment.rented == False).count()
+    # equipment = query.all()
+    return jsonify(query)
+    # posts = display.json()
+    # return render_template("home_page.html", posts = posts)  
 
 # @tribe.route("/<string:tribe_name>", methods=["GET"])
 # def tribe_tribe_name():
