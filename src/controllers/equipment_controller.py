@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, render_template, url_for
 from schemas.EquipmentSchema import equipment_schema, equipments_schema
 from models.Equipment import Equipment
 from models.Profile import Profile
@@ -6,8 +6,19 @@ from models.User import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth_services import verify_user
 from main import db
+import json
 
 equipment = Blueprint("equipment", __name__, url_prefix="/")
+
+
+@equipment.route("/<string:available>", methods=["GET"])
+def equipment_get_available(available):
+    query = db.session.query(Equipment)
+    query = query.filter(Equipment.rented == False)
+    equipment = query.all()
+    display = jsonify(equipments_schema.dump(equipment))
+    posts = json.loads(display)
+    return render_template("home_page.html", posts = posts)
 
 # @tribe.route("/<string:tribe_name>", methods=["GET"])
 # def tribe_tribe_name():

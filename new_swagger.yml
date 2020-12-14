@@ -103,11 +103,11 @@ paths:
           description: OK
         '401':
           description: Invalid User
-  /profile/profile_id/tracker:
+  /profile/profile_id/equipment:
     post:
       tags:
-      - "Tracker"
-      summary: Create Goal or Target to tracker
+      - "Equipment"
+      summary: Create Equipment Entry
       responses:
         '201':
           description: OK
@@ -115,7 +115,7 @@ paths:
           description: Invalid User
     get:
       tags:
-      - "Tracker"
+      - "Equipment"
       summary: Retrive Goal or Target that is being tracked
       responses:
         '201':
@@ -124,7 +124,7 @@ paths:
           description: Invalid User     
     put:
       tags:
-      - "Tracker"
+      - "Equipment"
       summary: Update Goal or Target that is being tracked
       responses:
         '201':
@@ -133,7 +133,7 @@ paths:
           description: Invalid User   
     delete:
       tags:
-      - "Tracker"
+      - "Equipment"
       summary: Update Goal or Target that is being tracked
       responses:
         '201':

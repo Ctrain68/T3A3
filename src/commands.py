@@ -22,6 +22,8 @@ def seed_db():
     from main import bcrypt
     from models.Equipment import Equipment
     import random
+    from random import seed
+    from random import randint
 
     faker = Faker()
     profiles = []
@@ -50,10 +52,10 @@ def seed_db():
 
     for i in range(30):
         equipment = Equipment()
-        equipment.equipnment_name = faker.name()
-        equipment.description = faker.catch_phrase()
+        equipment.equipment_name = faker.name()
+        equipment.equipment_description = faker.catch_phrase()
         equipment.rented = random.choice([True, False])
-        equipment.rentpw=randint(8, 120)
+        equipment.rentpw= randint(8, 120)
         equipment.owner_id = random.choice(profiles).profileid
         equipment.category = random.choice(categories)
         db.session.add(equipment)
