@@ -22,10 +22,6 @@ def profile_create(user=None):
 
     user_id = get_jwt_identity()
 
-    # user = User.query.get(account_id)
-
-    # if not account:
-    #     return abort(401, description="Account not found")
     
     profile_fields = profile_schema.load(request.json)
 
@@ -61,13 +57,6 @@ def profile_show(username):
 @verify_user
 def profile_update(username, user=None):
 
-    # account_id = get_jwt_identity()
-
-    # account = Accounts.query.get(account_id)
-
-    # if not account:
-    #     return abort(401, description="Account not found")
-    #Update a user
 
     profile = Profile.query.filter_by(username = username, user_id=user.id)
 
@@ -87,18 +76,9 @@ def profile_update(username, user=None):
 @verify_user
 def profile_delete(username, user=None):
 
-    # account_id = get_jwt_identity()
 
-    # account = Accounts.query.get(account_id)
-
-    # if not account:
-    #     return abort(401, description="Account not found")
-
-    
-    #Delete a User
     profile = Profile.query.filter_by(username = username, user_id=user.id).first()
 
-    # users_fields = user_schema.load(request.json)
 
     if not profile:
         return abort(400, description="Unauthorised to delete user")

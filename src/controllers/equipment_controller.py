@@ -18,14 +18,12 @@ def equipment_get_available(available):
     query = query.filter(Equipment.rented == False)
     posts = query.all()
     return jsonify(equipments_schema.dump(posts))
-    # posts = display.json()
     # return render_template("home_page.html", posts = posts)   
 
 @equipment.route("/count/<string:count>", methods=["GET"])
 def equipment_get_count_available(count):
     query = db.session.query(Equipment)
     equipment = query.filter(Equipment.rented == False).count()
-    # equipment = query.all()
     return jsonify(equipment)
     # posts = display.json()
     # return render_template("home_page.html", posts = posts)  
