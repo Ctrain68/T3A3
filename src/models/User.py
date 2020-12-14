@@ -1,7 +1,7 @@
 from main import db
 from sqlalchemy.orm import backref
 from models.Profile import Profile
-from models.Tribe import Tribe
+
 
 class User(db.Model):
     __tablename__ = "users"
@@ -10,6 +10,5 @@ class User(db.Model):
     email = db.Column(db.String(), nullable=False, unique=True)
     password = db.Column(db.String(), nullable=False)
     profile = db.relationship("Profile", backref=backref("user", uselist=False))
-    tribe = db.relationship("Tribe", backref="user", lazy="dynamic")
     def __repr__(self):
         return f"<Users {self.email}>"

@@ -20,17 +20,20 @@ def seed_db():
     from models.Profile import Profile
     from faker import Faker
     from main import bcrypt
+    from models.Equipment import Equipment
     import random
 
     faker = Faker()
-    accounts = []
+    profiles = []
+    categories = ["dumbells", "cardio", "machine", "yoga", "mobility"]
+    
 
     for i in range(10):
         user = User()
         user.email = f"test{i}@test.com"
         user.password = bcrypt.generate_password_hash("123456").decode("utf-8")
         db.session.add(user)
-        accounts.append(user)
+        
     db.session.commit()
 
     for i in range(10):
@@ -40,7 +43,20 @@ def seed_db():
         profile.lname = faker.last_name()
         profile.account_active=faker.boolean()
         profile.user_id = i+1
+        profiles.append(profile)
         db.session.add(profile)
+
+    db.session.commit()
+
+    for i in range(30):
+        equipment = Equipment()
+        equipment.equipnment_name = faker.name()
+        equipment.description = faker.catch_phrase()
+        equipment.rented = random.choice([True, False])
+        equipment.rentpw=randint(8, 120)
+        equipment.owner_id = random.choice(profiles).profileid
+        equipment.category = random.choice(categories)
+        db.session.add(equipment)
 
     db.session.commit()
     print("Tables seeded")
