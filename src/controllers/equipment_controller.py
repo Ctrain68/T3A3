@@ -15,10 +15,19 @@ equipment = Blueprint("equipment", __name__, url_prefix="/")
 def equipment_get_available(available):
     query = db.session.query(Equipment)
     query = query.filter(Equipment.rented == False)
-    equipment = query.all()
-    display = jsonify(equipments_schema.dump(equipment))
-    posts = json.loads(display)
-    return render_template("home_page.html", posts = posts)
+    posts = query.all()
+    # display = jsonify(equipments_schema.dump(equipment))
+    # posts = display.json()
+    return render_template("home_page.html", posts = posts)   
+
+@equipment.route("/<string:average>", methods=["GET"])
+def equipment_get_available(average):
+    query = db.session.query(Equipment)
+    query = query.filter(Equipment.rented == False)
+    posts = query.all()
+    # display = jsonify(equipments_schema.dump(equipment))
+    # posts = display.json()
+    return render_template("home_page.html", posts = posts)  
 
 # @tribe.route("/<string:tribe_name>", methods=["GET"])
 # def tribe_tribe_name():

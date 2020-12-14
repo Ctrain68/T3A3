@@ -1,11 +1,12 @@
 from flask import Flask, jsonify
 from marshmallow.exceptions import ValidationError
 from flask_marshmallow import Marshmallow
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, func
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 
+func = func()
 db = SQLAlchemy()
 ma = Marshmallow()
 bcrypt = Bcrypt()
@@ -26,6 +27,8 @@ def create_app():
     bcrypt.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
+    func.init(app)
+
 
    
 
