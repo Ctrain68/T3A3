@@ -1,5 +1,6 @@
 from main import db
 from sqlalchemy.orm import backref
+from models.EquipmentOrder import EquipmentOrder
 
 
 class Equipment(db.Model):
@@ -12,5 +13,6 @@ class Equipment(db.Model):
     rented = db.Column(db.Boolean(), default=False)
     rentpw = db.Column(db.Integer(), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey("profiles.profileid"), nullable=False)
+    equipment_order = db.relationship("EquipmentOrder", backref="equipment")
     def __repr__(self):
-        return f"<Tribe {self.equipment}>"
+        return f"<Equipment {self.equipment_name}>"
