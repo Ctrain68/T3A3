@@ -21,12 +21,15 @@ def seed_db():
     from faker import Faker
     from main import bcrypt
     from models.Equipment import Equipment
+    from models.EquipmentOrder import EquipmentOrder
     import random
     from random import seed
     from random import randint
 
     faker = Faker()
     profiles = []
+    equipments = []
+
     categories = ["dumbells", "cardio", "machine", "yoga", "mobility"]
     
 
@@ -58,7 +61,19 @@ def seed_db():
         equipment.rentpw= randint(8, 120)
         equipment.owner_id = random.choice(profiles).profileid
         equipment.category = random.choice(categories)
+        equipments.append(equipment)
         db.session.add(equipment)
+ 
+    for i in range(30):
+        equipment_order = EquipmentOrder()
+        equipment_order.order_begin_date = faker.date_between(start_date='-1y', end_date='today')
+        equipment_order.order_return_date_estimate = faker.date_between(start_date='today', end_date='+1y')
+        equipment_order.order_actual_return_date = faker.date_between(start_date='today', end_date='+1y')
+        equipment_order.order_active= random.choice([True, False])
+        equipment_order.equipment_id = randint(1, 29)
+        # equipment_order.equipment_id = random.choice(equipments).id
+        equipment_order.hirer_id = random.choice(profiles).profileid
+        db.session.add(equipment_order)
 
     db.session.commit()
     print("Tables seeded")

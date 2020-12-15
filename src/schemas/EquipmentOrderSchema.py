@@ -11,5 +11,5 @@ class EquipmentOrderSchema(ma.SQLAlchemyAutoSchema):
 
 
 
-equipmentorder_schema = EquipmentOrderSchema()
-equipmentorders_schema = EquipmentOrderSchema(many=True)
+equipment_order_schema = EquipmentOrderSchema()
+equipment_orders_schema = EquipmentOrderSchema(many=True)

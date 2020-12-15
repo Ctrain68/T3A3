@@ -9,16 +9,23 @@ from main import db
 from sqlalchemy.sql import func, label
 import json
 
-equipment_orders = Blueprint("equipment_orders", __name__, url_prefix="/profile/equipment_orders")
+equipment_orders = Blueprint("equipment_orders", __name__, url_prefix="/equipment_orders")
 
 
-# @equipment.route("/available/<string:available>", methods=["GET"])
-# def equipment_get_available(available):
-#     query = db.session.query(Equipment)
-#     query = query.filter(Equipment.rented == False)
-#     posts = query.all()
-#     return jsonify(equipments_schema.dump(posts))
-#     # return render_template("home_page.html", posts = posts)   
+
+@equipment_orders.route("/all", methods=["GET"])
+def equipment_index():
+    orders = EquipmentOrder.query.all()
+    
+    return jsonify(equipment_orders_schema.dump(orders))
+
+@equipment_orders.route("/", methods=["GET"])
+def equipment_get_rented():
+    query = db.session.query(EquipmentOrder)
+    query = query.filter(EquipmentOrder.order_active == False)
+    posts = query.all()
+    return jsonify(equipment_orders_schema.dump(posts))
+    # return render_template("home_page.html", posts = posts)   
 
 # @equipment.route("/count/<string:count>", methods=["GET"])
 # def equipment_get_count_available(count):
