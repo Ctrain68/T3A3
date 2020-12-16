@@ -6,7 +6,7 @@ from models.User import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth_services import verify_user
 from main import db
-from sqlalchemy.sql import func, label
+from sqlalchemy.sql import func, label, expression
 import json
 
 equipment = Blueprint("equipment", __name__, url_prefix="/")
@@ -24,7 +24,7 @@ def equipment_get_available(available):
 def equipment_get_count_available(count):
     # query = db.session.query(Equipment)
     # equipment = query.filter(Equipment.rented == False).count().group_by()
-    equipment = db.session.query(Equipment.category, label("count", func.count(Equipment.id))).group_by(Equipment.category).all()
+    equipment = db.session.query(Equipment.category, label("count", func.count(Equipment.id))).filter(Equipment.rented==False).group_by(Equipment.category).order_by(Equipment.category).all()
     return jsonify(equipment)
     # posts = display.json()
     # return render_template("home_page.html", posts = posts)  

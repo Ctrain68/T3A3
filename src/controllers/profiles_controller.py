@@ -4,14 +4,23 @@ from models.Profile import Profile
 from models.User import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth_services import verify_user
+from sqlalchemy.sql import func, label, expression
 from main import db
 
 profile = Blueprint("profile", __name__, url_prefix="/profile")
 
-@profile.route("/", methods=["GET"])
+@profile.route("/active", methods=["GET"])
 def profile_index():
-    profiles = Profile.query.all()
-    return jsonify(profiles_schema.dump(profiles))
+    query = session.query(Profile)
+
+    return jsonify(profiles_schema.dump(query))
+
+
+@profile.route("/active", methods=["GET"])
+def profile_index_active():
+    # query = session.query(Profile)
+    query = db.session.query(Profile).filter(Profile.account_active).order_by(Profile.fname)
+    return jsonify(profiles_schema.dump(query))
    
 
 @profile.route("/", methods=["POST"])
