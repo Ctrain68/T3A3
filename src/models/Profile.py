@@ -12,7 +12,7 @@ class Profile(db.Model):
     fname = db.Column(db.String(), nullable=False)
     lname = db.Column(db.String(), nullable=False)
     account_active = db.Column(db.Boolean(), default = True)
-    equipment = db.relationship("Equipment", backref="profile")
+    equipment = db.relationship("Equipment", backref="profile", lazy='dynamic')
     equipment_order = db.relationship("EquipmentOrder", backref="profile")
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     profile_image = db.relationship("ProfileImages", backref="profile", uselist=False)

@@ -1,17 +1,18 @@
 from flask import Blueprint, request, jsonify, abort
 from schemas.ProfileSchema import profile_schema, profiles_schema
 from models.Profile import Profile
+from models.Equipment import Equipment
 from models.User import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth_services import verify_user
-from sqlalchemy.sql import func, label, expression
+from sqlalchemy.sql import func, label
 from main import db
 
 profile = Blueprint("profile", __name__, url_prefix="/profile")
 
-@profile.route("/active", methods=["GET"])
+@profile.route("/all", methods=["GET"])
 def profile_index():
-    query = session.query(Profile)
+    query = db.session.query(Profile)
 
     return jsonify(profiles_schema.dump(query))
 
@@ -20,6 +21,13 @@ def profile_index():
 def profile_index_active():
     # query = session.query(Profile)
     query = db.session.query(Profile).filter(Profile.account_active).order_by(Profile.fname)
+    return jsonify(profiles_schema.dump(query))
+
+@profile.route("/equipment", methods=["GET"])
+def profile_index_profile_equipment():
+    # query = session.query(Profile)
+    query = db.session.query(Profile, Equipment).outerjoin(Equipment, Profile.profileid == Equipment.owner_id).all()
+    print(query)
     return jsonify(profiles_schema.dump(query))
    
 
