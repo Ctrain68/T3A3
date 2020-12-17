@@ -22,9 +22,9 @@ def equipment_index():
 @equipment_orders.route("/", methods=["GET"])
 def equipment_get_rented():
     query = db.session.query(EquipmentOrder)
-    query = query.filter(EquipmentOrder.order_active == False)
-    posts = query.all()
-    return jsonify(equipment_orders_schema.dump(posts))
+    query = query.filter(EquipmentOrder.order_active == False).order_by(EquipmentOrder.order_begin_date).all
+
+    return jsonify(equipment_orders_schema.dump(query))
     # return render_template("home_page.html", posts = posts)   
 
 # @equipment.route("/count/<string:count>", methods=["GET"])

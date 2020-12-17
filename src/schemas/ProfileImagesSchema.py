@@ -9,3 +9,4 @@ class ProfileImagesSchema(ma.SQLAlchemyAutoSchema):
         filename = ma.String(required=True, validate=Length(min=1))
 
 profile_image_schema = ProfileImagesSchema()
+profile_images_schema = ProfileImagesSchema(many=True)

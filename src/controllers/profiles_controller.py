@@ -2,13 +2,54 @@ from flask import Blueprint, request, jsonify, abort
 from schemas.ProfileSchema import profile_schema, profiles_schema
 from models.Profile import Profile
 from models.Equipment import Equipment
+from models.EquipmentOrder import EquipmentOrder
 from models.User import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth_services import verify_user
 from sqlalchemy.sql import func, label
 from main import db
+import os
+import json
+
+from models.ProfileImages import ProfileImages
+from schemas.UserSchema import user_schema, users_schema
+from schemas.EquipmentSchema import equipment_schema, equipments_schema
+from schemas.EquipmentOrderSchema import equipment_order_schema, equipment_orders_schema
+from schemas.ProfileImagesSchema import profile_image_schema, profile_images_schema
 
 profile = Blueprint("profile", __name__, url_prefix="/profile")
+
+tables = [Equipment, EquipmentOrder, Profile, ProfileImages, User]
+schemas = [equipments_schema, equipment_orders_schema, profiles_schema, profile_images_schema, users_schema ]
+
+@profile.route("/dump/all", methods=["GET"])
+def profile_dump():
+    i=0
+    try:
+        os.remove("backup/backup.json")
+        print("file successfully deleted")
+    except:
+        print("file does not exist")
+    for table in tables:
+
+
+        query = db.session.query(table)
+        data = ((schemas[i]).dump(query))
+        data = json.dumps(data)
+        i+=1
+    
+
+        file = open("backup/backup.json", "a")
+        file.write(data)
+        file.close()
+
+ 
+
+    return "Data backed up"
+
+
+
+
 
 @profile.route("/all", methods=["GET"])
 def profile_index():
@@ -23,13 +64,28 @@ def profile_index_active():
     query = db.session.query(Profile).filter(Profile.account_active).order_by(Profile.fname)
     return jsonify(profiles_schema.dump(query))
 
-@profile.route("/equipment", methods=["GET"])
-def profile_index_profile_equipment():
+@profile.route("/onhire", methods=["GET"])
+def profile_index_profile_equipment_on_hire():
     # query = session.query(Profile)
-    query = db.session.query(Profile, Equipment).outerjoin(Equipment, Profile.profileid == Equipment.owner_id).all()
-    print(query)
-    return jsonify(profiles_schema.dump(query))
-   
+    query = db.session.query(Profile, Equipment, EquipmentOrder).outerjoin(EquipmentOrder, Profile.profileid == EquipmentOrder.hirer_id).outerjoin(Equipment, EquipmentOrder.hirer_id == Equipment.owner_id).order_by(Profile.username).all()
+    things = []
+    for result in query:
+        things.append(f"Name: {result[0].username} Rentpw: {result[1].rentpw} Active: {result[2].order_active}")
+    # print(query)
+    return jsonify((things))
+
+@profile.route("/equipment", methods=["GET"])
+def profile_index_profile_equipment_rent():
+    # query = session.query(Profile)
+    query = db.session.query(Profile, Equipment).join(Equipment, Profile.profileid == Equipment.owner_id ).order_by(Profile.username).all()
+    things = []
+    for result in query:
+        things.append(f"Name: {result[0].username} Rentpw: {result[1].rentpw}")
+    print(things)
+    return jsonify((things))
+
+
+
 
 @profile.route("/", methods=["POST"])
 @jwt_required
