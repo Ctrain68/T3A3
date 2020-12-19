@@ -16,26 +16,25 @@ equipment = Blueprint("equipment", __name__, url_prefix="/equipment")
 def equipment_get_all():
     query = db.session.query(Equipment)
     
-    return jsonify(equipments_schema.dump(query))
-    # return render_template("home_page.html", posts = query) 
+    # return jsonify(equipments_schema.dump(query))
+    return render_template("all.html", posts = query) 
 
 @equipment.route("/available/", methods=["GET"])
-def equipment_get_available(available):
+def equipment_get_available():
     query = db.session.query(Equipment)
     query = query.filter(Equipment.rented == False)
     posts = query.all()
     # return jsonify(equipments_schema.dump(posts))
-    return render_template("home_page.html", posts = posts)   
+    return render_template("Available.html", posts = posts)   
 
 @equipment.route("/count/", methods=["GET"])
-def equipment_get_count_available(count):
+def equipment_get_count_available():
     # query = db.session.query(Equipment)
     # equipment = query.filter(Equipment.rented == False).count().group_by()
     equipment = db.session.query(Equipment.category, label("count", func.count(Equipment.id))).filter(Equipment.rented==False).group_by(Equipment.category).order_by(Equipment.category).all()
-    print(equipment)
     return jsonify(equipment)
     # posts = display.json()
-    # return render_template("home_page.html", posts = posts)  
+    # return render_template("Categories.html", posts = equipment)  
 
 @equipment.route("/average/", methods=["GET"])
 def equipment_get_average_price(average):

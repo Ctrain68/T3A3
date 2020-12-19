@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for post in posts %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">Rent pw ${{ post.rentpw }}</a>
+              <small class="text-muted">Category {{ post.category }}</small>
+            </div>
+            <h2><a class="article-title" href="#">Descriptiom {{ post.equipment_description }}</a></h2>
+            <p class="article-content">Owner {{ post.equipment_name }}</p>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock %}
