@@ -26,6 +26,8 @@ paths:
           description: Incorrect username or password
 
 
+
+
          
 
   /profile/:
@@ -103,7 +105,39 @@ paths:
           description: OK
         '401':
           description: Invalid User
-  /profile/profile_id/equipment:
+  /profile/equipment/:
+    get:
+      tags:
+      - "Equipment"
+      summary: Retrieve All Equipment
+      responses:
+        '201':
+          description: OKr 
+  /profile/equipment/available:
+    get:
+      tags:
+      - "Equipment"
+      summary: Retrieve All Equipment available equipment
+      responses:
+        '201':
+          description: OK
+  /profile/equipment/count:
+    get:
+      tags:
+      - "Equipment"
+      summary: Retrieve a count of equipment by catergory that is available
+      responses:
+        '201':
+          description: OK 
+  /profile/equipment/average:
+    get:
+      tags:
+      - "Equipment"
+      summary: Retrieve average rentpw per gym equipment category
+      responses:
+        '201':
+          description: OK
+  /profile/equipment/profile:
     post:
       tags:
       - "Equipment"
@@ -113,19 +147,12 @@ paths:
           description: OK
         '400':
           description: Invalid User
-    get:
-      tags:
-      - "Equipment"
-      summary: Retrive Goal or Target that is being tracked
-      responses:
-        '201':
-          description: OK
-        '400':
-          description: Invalid User     
+
+  /profile/equipment/<int:profileid>:    
     put:
       tags:
       - "Equipment"
-      summary: Update Goal or Target that is being tracked
+      summary: Update Equipment
       responses:
         '201':
           description: OK
@@ -140,43 +167,49 @@ paths:
           description: OK
         '400':
           description: Invalid User 
-  /tribe/:
+  /EquipmentOrder/all:
     get:
       tags:
-      - "Tribe"
-      summary: Search for a Tribe by tribe name
+      - "EquipmentOrder"
+      summary: Returns all equipment orders
       responses:
         '201':
           description: OK
-        '400':
-          description: Invalid User
-    post:
+  /EquipmentOrder/rented:
+    get:
       tags:
-      - "Tribe"
-      summary: Create a Tribe
+      - "EquipmentOrder"
+      summary: Returns all equipment orders that are rented
       responses:
         '201':
           description: OK
-        '400':
-          description: Invalid User
-    put:
-      tags:
-      - "Tribe"
-      summary: Update a Tribe
-      responses:
-        '201':
-          description: OK
-        '400':
-          description: Invalid User
-    delete:
-      tags:
-      - "Tribe"
-      summary: Delete a Tribe
-      responses:
-        '201':
-          description: OK
-        '400':
-          description: Invalid User
+    # post:
+    #   tags:
+    #   - "EquipmentOrder"
+    #   summary: Create a Tribe
+    #   responses:
+    #     '201':
+    #       description: OK
+    #     '400':
+    #       description: Invalid User
+    # put:
+    #   tags:
+    #   - "EquipmentOrder"
+    #   summary: Update a Tribe
+    #   responses:
+    #     '201':
+    #       description: OK
+    #     '400':
+    #       description: Invalid User
+    # delete:
+    #   tags:
+    #   - "EquipmentOrder"
+    #   summary: Delete a Tribe
+    #   responses:
+    #     '201':
+    #       description: OK
+    #     '400':
+    #       description: Invalid User
   # /tribe/tribename:
   #   get:
   #     tags:
@@ -187,69 +220,69 @@ paths:
   #         description: OK
   #       '400':
   #         description: Invalid User
-  /tribe/public:
-    get:
-      tags:
-      - "Tribe"
-      summary: Returns all Public tribes
-      responses:
-        '201':
-          description: OK
-        '400':
-          description: Invalid User
+  # /tribe/public:
+  #   get:
+  #     tags:
+  #     - "Tribe"
+  #     summary: Returns all Public tribes
+  #     responses:
+  #       '201':
+  #         description: OK
+  #       '400':
+  #         description: Invalid User
 
 
-  /user/tribe/:
-    get:
-      tags:
-      - "User/Tribe"
-      summary: returns all tribes with usersnames nested
-      responses:
-        '201':
-          description: OK
-        '400':
-          description: Invalid User
+  # /user/tribe/:
+  #   get:
+  #     tags:
+  #     - "User/Tribe"
+  #     summary: returns all tribes with usersnames nested
+  #     responses:
+  #       '201':
+  #         description: OK
+  #       '400':
+  #         description: Invalid User
 
-  /user/tribe/tribename:
-    get:
-      tags:
-      - "User/Tribe"
-      summary: returns users for a specific tribe
-      responses:
-        '201':
-          description: OK
-        '400':
-          description: Invalid User
-    post:
-      tags:
-      - "User/Tribe"
-      summary: add user to a tribe, tribe must be public
-      responses:
-        '201':
-          description: OK
-        '400':
-          description: Invalid User
-    delete:
-      tags:
-      - "User/Tribe"
-      summary: returns users for a specific tribe
-      responses:
-        '201':
-          description: OK
-        '400':
-          description: Invalid User
+  # /user/tribe/tribename:
+  #   get:
+  #     tags:
+  #     - "User/Tribe"
+  #     summary: returns users for a specific tribe
+  #     responses:
+  #       '201':
+  #         description: OK
+  #       '400':
+  #         description: Invalid User
+  #   post:
+  #     tags:
+  #     - "User/Tribe"
+  #     summary: add user to a tribe, tribe must be public
+  #     responses:
+  #       '201':
+  #         description: OK
+  #       '400':
+  #         description: Invalid User
+  #   delete:
+  #     tags:
+  #     - "User/Tribe"
+  #     summary: returns users for a specific tribe
+  #     responses:
+  #       '201':
+  #         description: OK
+  #       '400':
+  #         description: Invalid User
 
 
-  /user/tribe/username:
-    get:
-      tags:
-      - "User/Tribe"
-      summary: Search for a Tribes by username
-      responses:
-        '201':
-          description: OK
-        '400':
-          description: Invalid User
+  # /user/tribe/username:
+  #   get:
+  #     tags:
+  #     - "User/Tribe"
+  #     summary: Search for a Tribes by username
+  #     responses:
+  #       '201':
+  #         description: OK
+  #       '400':
+  #         description: Invalid User
 
 
     

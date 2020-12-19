@@ -19,10 +19,10 @@ def equipment_index():
     
     return jsonify(equipment_orders_schema.dump(orders))
 
-@equipment_orders.route("/", methods=["GET"])
+@equipment_orders.route("/rented", methods=["GET"])
 def equipment_get_rented():
     query = db.session.query(EquipmentOrder)
-    query = query.filter(EquipmentOrder.order_active == False).order_by(EquipmentOrder.order_begin_date).all
+    query = query.filter(EquipmentOrder.order_active == True).order_by(EquipmentOrder.order_begin_date).all
 
     return jsonify(equipment_orders_schema.dump(query))
     # return render_template("home_page.html", posts = posts)   

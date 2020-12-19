@@ -14,8 +14,10 @@ class Profile(db.Model):
     account_active = db.Column(db.Boolean(), default = True)
     equipment = db.relationship("Equipment", backref="profile", lazy='dynamic')
     equipment_order = db.relationship("EquipmentOrder", backref="profile")
+    admin = db.Column(db.Boolean(), default = False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     profile_image = db.relationship("ProfileImages", backref="profile", uselist=False)
+    equipment = db.relationship("Equipment", cascade="all, delete")
     
     
     def __repr__(self):

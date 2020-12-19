@@ -19,7 +19,7 @@ def equipment_get_all():
     return jsonify(equipments_schema.dump(query))
     # return render_template("home_page.html", posts = query) 
 
-@equipment.route("/available/<string:available>", methods=["GET"])
+@equipment.route("/available/", methods=["GET"])
 def equipment_get_available(available):
     query = db.session.query(Equipment)
     query = query.filter(Equipment.rented == False)
@@ -27,18 +27,19 @@ def equipment_get_available(available):
     # return jsonify(equipments_schema.dump(posts))
     return render_template("home_page.html", posts = posts)   
 
-@equipment.route("/count/<string:count>", methods=["GET"])
+@equipment.route("/count/", methods=["GET"])
 def equipment_get_count_available(count):
     # query = db.session.query(Equipment)
     # equipment = query.filter(Equipment.rented == False).count().group_by()
     equipment = db.session.query(Equipment.category, label("count", func.count(Equipment.id))).filter(Equipment.rented==False).group_by(Equipment.category).order_by(Equipment.category).all()
+    print(equipment)
     return jsonify(equipment)
     # posts = display.json()
     # return render_template("home_page.html", posts = posts)  
 
-@equipment.route("/average/<string:average>", methods=["GET"])
+@equipment.route("/average/", methods=["GET"])
 def equipment_get_average_price(average):
-    # query = Equipment.query(func.sum(Equipment.rentpw.all()))
+
     query = db.session.query(Equipment.category, label('average_rent', func.avg(Equipment.rentpw))).group_by(Equipment.category).all()
     
     return jsonify(query)
@@ -101,23 +102,12 @@ def equipment_update(user, id):
 @equipment.route("/<int:id>", methods=["DELETE"])
 @jwt_required
 @verify_user
-def profile_delete(user, id):
-    
-
-    # account_id = get_jwt_identity()
-
-    # account = Accounts.query.get(account_id)
-
-    # if not account:
-    #     return abort(401, description="Account not found")
-
+def equipment_delete(user, id):
     
     #Delete a User
     equipment = Equipment.query.options(joinedload("profile")).filter_by(id = id, owner_id=user.id).first()
 
     print(equipment)
-
-    # users_fields = user_schema.load(request.json)
 
     if not equipment:
         return abort(400, description="Unauthorised to delete equipment")

@@ -16,7 +16,7 @@ profile_images = Blueprint('profile_images', __name__, url_prefix="/profile/<int
 @verify_user
 def profile_image_create(profile_id, user=None):
     profile = Profile.query.filter_by(profileid=profile_id, user_id=user.id).first()
-    print("*************")
+    
     if not profile:
         return abort(401, description="Invalid user")
 

@@ -7,8 +7,8 @@ class EquipmentOrder(db.Model):
     __tablename__ ='equipment_order'
 
     equipmentorderid = db.Column(db.Integer, primary_key=True)
-    equipment_id = db.Column(db.Integer, db.ForeignKey("equipment.id"), nullable=False)
-    hirer_id = db.Column(db.Integer, db.ForeignKey("profiles.profileid"), nullable=False)
+    equipment_id = db.Column(db.Integer, db.ForeignKey("equipment.id"), nullable=True)
+    hirer_id = db.Column(db.Integer, db.ForeignKey("profiles.profileid"), nullable=True)
     order_begin_date = db.Column(db.DateTime, nullable=False, default=datetime.now)
     order_return_date_estimate = db.Column(db.DateTime, nullable=True)
     order_actual_return_date = db.Column(db.DateTime, nullable=True)
